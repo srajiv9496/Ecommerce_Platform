@@ -24,14 +24,25 @@ class SliderDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('action', function($query){
                 $editBtn = "<a href='".route('admin.slider.edit', $query->id)."' class='btn btn-primary'><i class='far fa-edit'></i></a>";
-                $deleteBtn = "<a href='".route('admin.slider.destroy', $query->id)."' class='btn btn-danger ml-2'><i class='far fa-trash-alt'></i></a>";
+                $deleteBtn = "<a href='".route('admin.slider.destroy', $query->id)."' class='btn btn-danger ml-2 delete-item'><i class='far fa-trash-alt'></i></a>";
                  
                 return $editBtn.$deleteBtn;
             })
             ->addColumn('banner', function($query){
                 return $img = "<img width='100px' src='".asset($query->banner)."'></img>";
             })
-            ->rawColumns(['banner', 'action'])
+            ->addColumn('status', function($query){
+                $active  = '<i class="badge badge-success">Active</i>';
+                $inActive  = '<i class="badge badge-danger">Inactive</i>';
+
+                if($query->status == 1){
+                    return $active;
+                }
+                else{
+                    return $inActive;
+                }
+            })
+            ->rawColumns(['banner', 'action', 'status'])
             ->setRowId('id');
     }
 
@@ -74,6 +85,8 @@ class SliderDataTable extends DataTable
             Column::make('id')->width(50),
             Column::make('banner')->width(500),
             Column::make('title')->width(600),
+            Column::make('serial'),
+            Column::make('status'),
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)

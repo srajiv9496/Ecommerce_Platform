@@ -98,7 +98,7 @@ class SliderController extends Controller
         /** Handle file update */
         $imagePath = $this->updateImage($request, 'banner', 'uploads', $slider->banner);
 
-        $slider->banner = empty(!$imagePath) ? $imagePath : $slider->banner;// bug fixed as of now no null path will be assigned if there is no file selected
+        $slider->banner = empty(!$imagePath) ? $imagePath : $slider->banner;// bug fixed as of now no null path will be assigned if there is no file selected~
         $slider->type = $request->type;
         $slider->title = $request->title;
         $slider->starting_price = $request->starting_price;
@@ -117,6 +117,10 @@ class SliderController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $slider = Slider::findOrFail($id);
+        $this -> deleteImage($slider->banner);
+        $slider->delete();
+    
+        return response(['status' => 'success', 'message'=>'Deleted successfully!']);
     }
 }
