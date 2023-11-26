@@ -82,7 +82,7 @@
   <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="{{asset('backend/assets/js/bootstrap-iconpicker.bundle.min.js')}}"></script>
-
+ 
  
   <!-- Page Specific JS File -->
   <script src="{{asset('backend/assets/js/page/index-0.js')}}"></script>
@@ -134,33 +134,25 @@
                 if(data.status == 'success'){
                   Swal.fire(
                     'Deleted!',
-                    data.message
+                    data.message,
+                    'success'
                   )
                   window.location.reload();
                 }else if(data.status == 'error'){
                   Swal.fire(
                     'Cannot Delete',
-                    data.message
+                    data.message,
+                    'success'
                   )
                 }
-
-                
               },
-              error:function(zhr, status, error){
+              error:function(xhr, status, error){
                 console.log(error);
               }
             })
-
-            Swal.fire({
-              title: "Deleted!",
-              text: "Your file has been deleted.",
-              icon: "success"
-            });
           }
         });
-
       })
-
     })
   </script>
 
