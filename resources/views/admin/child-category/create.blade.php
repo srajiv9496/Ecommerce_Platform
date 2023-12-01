@@ -60,18 +60,16 @@
     $('body').on('change', '.main-category', function(e){
       let id = $(this).val();
       $.ajax({
-        method: 'GET',
-        url: "{{route('admin.get-subcategories')}}",
+        url: "{{route('admin.child-category.change-status')}}",
+        method: 'PUT',
         data: {
-          id:id
+          status: isChecked,
+          id: id
         },
-        success:function(data){
-          $('.sub-category').html(`<option value="">Select</option>`);
-          $.each(data, function(i, item){
-            $('.sub-category').append(`<option value="${item.id}">${item.name}</option>`);
-          })
+        success: function(data){
+          toastr.success(data.message)
         },
-        error:function(xhr, status, error){
+        error: function(xhr, status, error){
           console.log(error);
         }
       })
