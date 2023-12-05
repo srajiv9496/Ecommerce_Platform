@@ -142,7 +142,7 @@
                   Swal.fire(
                     'Cannot Delete',
                     data.message,
-                    'success'
+                    'error'
                   )
                 }
               },

@@ -26,7 +26,8 @@ class ChildCategoryController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('admin.child-category.create', compact('categories'));
+        $subCategories = SubCategory::all();
+        return view('admin.child-category.create', compact('categories', 'subCategories'));
     }
 
     /**
@@ -123,7 +124,7 @@ class ChildCategoryController extends Controller
 
     public function changeStatus(Request $request)
     {
-        $childCategory = ChildCategory::findOrFail($request->id);
+    $childCategory = ChildCategory::findOrFail($request->id);
         $childCategory->status = $request->status == 'true' ? 1 : 0;
         $childCategory->save();
 

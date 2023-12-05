@@ -13,9 +13,9 @@
                 <div class="card">
                   <div class="card-header">
                     <h4>Create Category</h4>
-                    <div class="card-header-action">
+                    {{-- <div class="card-header-action">
                         <a href="{{route('admin.category.create')}}" class="btn btn-primary"><i class="fas fa-plus"></i> Create New</a>
-                    </div>
+                    </div> --}}
                   </div>
                   <div class="card-body">
                     <form action="{{route('admin.category.store')}}" method="POST">

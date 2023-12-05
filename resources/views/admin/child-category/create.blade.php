@@ -30,6 +30,9 @@
                         <label for="inputState">Sub Category</label>
                         <select id="inputState" class="form-control sub-category" name="sub_category">
                             <option value="">Select</option>
+                            @foreach ($subCategories as $subCategory)
+                              <option value="{{$subCategory->id}}">{{$subCategory->name}}</option>
+                            @endforeach
                         </select>
                       </div>                      
                       <div class="form-group">
