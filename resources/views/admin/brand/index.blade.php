@@ -44,6 +44,7 @@
             status: isChecked,
             id: id
           },
+          
           success: function(data){
             toastr.success(data.message)
           },
