@@ -39,7 +39,7 @@
                         </div>
                         <div class="form-group">
                             <label>Description</label>
-                            <textarea class="summernote-simple" name="textarea">{{$profile->description}}</textarea>    
+                            <textarea class="summernote-simple" name="description">{{$profile->description}}</textarea>    
                         </div>
                         <div class="form-group">
                             <label>Facebook</label>
