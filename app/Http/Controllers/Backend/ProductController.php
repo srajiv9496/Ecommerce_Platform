@@ -49,16 +49,14 @@ class ProductController extends Controller
             'qty' => 'required',
             'short_description' =>['required','max:600'],
             'long_description' => 'required',
-            'is_top' => 'required',
-            'is_best' => 'required',
-            'is_featured' => 'required',
+            'product_type' => 'required',
             'seo_title' => ['nullable','max:200'],
             'seo_description' => ['nullable','max:250'],
             'status' => ['required']    
         ]);
         
         /**Handle image uplaod */
-        $imagePath = $this->uploadImage($request, 'image', 'uploads/products/');
+        $imagePath = $this->uploadImage($request, 'image', 'uploads');
         $products = new Product();
         $products->thumb_image = $imagePath;
         $products->name = $request->name;
@@ -77,9 +75,7 @@ class ProductController extends Controller
         $products->offer_price = $request->offer_price;
         $products->offer_start_date = $request->offer_start_date;   
         $products->offer_end_date = $request->offer_end_date;   
-        $products->is_top = $request->is_top;
-        $products->is_best = $request->is_best;
-        $products->is_featured = $request->is_featured;
+        $products->product_type = $request->product_type;
         $products->status = $request->status;
         $products->is_approved = 1;
         $products->seo_title = $request->seo_title; 
@@ -96,7 +92,7 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
+    //
     }
 
     /**
@@ -104,7 +100,12 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $product = Product::findOrFail($id);
+        $subCategories = SubCategory::where('category_id', $product->category_id)->get();
+        $childCategories = ChildCategory::where('sub_category_id', $product->sub_category_id)->get();
+        $brand = Brand::all();
+        $categories = Category::all();
+        return view('admin.product.edit', compact('product','categories', 'brand', 'subCategories', 'childCategories'));
     }
 
     /**
@@ -112,7 +113,54 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'image' => ['nullable', 'image', 'max:3000'],
+            'name' => ['required', 'max:200'],
+            'category' => 'required',
+            'brand' => 'required',
+            'price' => 'required',
+            'qty' => 'required',
+            'short_description' =>['required','max:600'],
+            'long_description' => 'required',
+            'product_type' => 'required',
+            'seo_title' => ['nullable','max:200'],
+            'seo_description' => ['nullable','max:250'],
+            'status' => ['required']    
+        ]);
+        
+
+        $products = Product::findOrFail($id);
+
+        /**Handle image uplaod */
+        $imagePath = $this->updateImage($request, 'image', 'uploads', $products->thumb_image);
+
+        $products->thumb_image = empty(!$imagePath) ? $imagePath : $products->thumb_image;
+        $products->name = $request->name;
+        $products->slug = Str::slug($request->name);
+        $products->vendor_id = Auth::user()->vendor->id;
+        $products->category_id = $request->category;
+        $products->sub_category_id = $request->sub_category;
+        $products->child_category_id = $request->child_category;    
+        $products->brand_id = $request->brand;
+        $products->qty = $request->qty;
+        $products->short_description = $request->short_description;
+        $products->long_description = $request->long_description;
+        $products->video_link = $request->video_link;
+        $products->sku = $request->sku;
+        $products->price = $request->price;
+        $products->offer_price = $request->offer_price;
+        $products->offer_start_date = $request->offer_start_date;   
+        $products->offer_end_date = $request->offer_end_date;   
+        $products->product_type = $request->product_type;
+        $products->status = $request->status;
+        $products->is_approved = 1;
+        $products->seo_title = $request->seo_title; 
+        $products->seo_description = $request->seo_description;
+        $products->save();
+
+        toastr()->success('Product has been Updated successfully!', 'success');
+
+        return redirect()->route('admin.product.index');    
     }
 
     /**
