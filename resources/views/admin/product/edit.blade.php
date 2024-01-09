@@ -68,12 +68,12 @@
 
                         <div class="form-group">
                           <label for="inputState">Brand</label>
-                          <select id="inputState" class="form-control" name="brand">
-                          <option value="">Select</option>
-                            @foreach ($brands as $brands)
-                              <option {{$brands->id == $product->brand_id ? 'selected' : ''}}value="{{$brand->id}}">{{$brand->name}}</option>                                
-                            @endforeach
-                          </select>
+                            <select id="inputState" class="form-control" name="brand">
+                              <option value="">Select</option>
+                                @foreach ($brands as $brand)
+                                  <option {{$brand->id == $product->brand_id ? 'selected' : ''}} value="{{$brand->id}}">{{$brand->name}}</option>                                
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="form-group">
@@ -155,7 +155,7 @@
                                 <option  {{$product->status == 0 ? 'selected' : ''}}  value="0">Inactive</option>
                             </select>
                         </div>
-                      <button type="submit" class="btn btn-primary">Create</button>
+                      <button type="submit" class="btn btn-primary">Update</button>
                     </form>
                   </div>
                 </div>

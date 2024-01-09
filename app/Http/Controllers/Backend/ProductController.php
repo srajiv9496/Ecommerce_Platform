@@ -103,9 +103,9 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $subCategories = SubCategory::where('category_id', $product->category_id)->get();
         $childCategories = ChildCategory::where('sub_category_id', $product->sub_category_id)->get();
-        $brand = Brand::all();
+        $brands = Brand::all();
         $categories = Category::all();
-        return view('admin.product.edit', compact('product','categories', 'brand', 'subCategories', 'childCategories'));
+        return view('admin.product.edit', compact('product','categories', 'brands', 'subCategories', 'childCategories'));
     }
 
     /**
@@ -113,6 +113,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // dd($request->all());
         $request->validate([
             'image' => ['nullable', 'image', 'max:3000'],
             'name' => ['required', 'max:200'],
