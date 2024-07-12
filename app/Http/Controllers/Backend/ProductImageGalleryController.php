@@ -35,10 +35,10 @@ class ProductImageGalleryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'image.*'=>['required', 'image', 'max:2048']
-        ]);   
+            'image.*' => ['required', 'image', 'max:2048']
+        ]);
 
-        /** Handle image uplaod */
+        /** Handle image upload */
         $imagePaths = $this->uploadMultiImage($request, 'image', 'uploads');
 
         foreach($imagePaths as $path){
@@ -48,7 +48,7 @@ class ProductImageGalleryController extends Controller
             $productImageGallery->save();
         }
 
-        toastr('Uploaded Successfully', 'success');
+        toastr('Uploaded successfully!');
 
         return redirect()->back();
     }

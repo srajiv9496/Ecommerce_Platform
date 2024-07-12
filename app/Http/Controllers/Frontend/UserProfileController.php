@@ -23,7 +23,8 @@ class UserProfileController extends Controller
         ]);
 
         $user = Auth::user();
-        if($request->hasfile('image')){
+
+        if($request->hasFile('image')){
             if(File::exists(public_path($user->image))){
                 File::delete(public_path($user->image));
             }
@@ -43,19 +44,21 @@ class UserProfileController extends Controller
 
         toastr()->success('Profile Updated Successfully!');
         return redirect()->back();
+
     }
 
     public function updatePassword(Request $request)
     {
         $request->validate([
-            "current_password" => ["required", "current_password"],
-            "password" => ["required", "min:8", "confirmed"]
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required','confirmed', 'min:8']
         ]);
 
         $request->user()->update([
-            "password" => bcrypt($request->password)
-        ]); 
-        toastr()->success('Profile password updated successfully');
+            'password' => bcrypt($request->password)
+        ]);
+
+        toastr()->success('Profile Password Updated Successfully!');
         return redirect()->back();
     }
 }

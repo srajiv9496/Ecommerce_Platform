@@ -32,11 +32,10 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $request->validate([
-            'icon'=>['required','not_in:empty'],
-            'name'=>['required','max:200', 'unique:categories,name'],
-            'status'=>['required']
+            'icon' => ['required', 'not_in:empty'],
+            'name' => ['required', 'max:200', 'unique:categories,name'],
+            'status' => ['required']
         ]);
 
         $category = new Category();
@@ -47,7 +46,7 @@ class CategoryController extends Controller
         $category->status = $request->status;
         $category->save();
 
-        toastr('Created Successfully','success');
+        toastr('Created Successfully!', 'success');
 
         return redirect()->route('admin.category.index');
     }
@@ -75,9 +74,9 @@ class CategoryController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'icon'=>['required','not_in:empty'],
-            'name'=>['required','max:200', 'unique:categories,name,'.$id],
-            'status'=>['required']
+            'icon' => ['required', 'not_in:empty'],
+            'name' => ['required', 'max:200', 'unique:categories,name,'.$id],
+            'status' => ['required']
         ]);
 
         $category = Category::findOrFail($id);
@@ -88,7 +87,7 @@ class CategoryController extends Controller
         $category->status = $request->status;
         $category->save();
 
-        toastr('Updated Successfully','success');
+        toastr('Updated Successfully!', 'success');
 
         return redirect()->route('admin.category.index');
     }
@@ -100,8 +99,8 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
         $subCategory = SubCategory::where('category_id', $category->id)->count();
-        if($subCategory>0){
-            return response(['status'=> 'error', 'message' => 'Item contains sub-item, to delete this item delelte its sub-items first']);
+        if($subCategory > 0){
+            return response(['status' => 'error', 'message' => 'This items contain, sub items for delete this you have to delete the sub items first!']);
         }
         $category->delete();
 

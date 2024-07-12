@@ -8,7 +8,6 @@ use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\ProductVariantItem;
 use Illuminate\Http\Request;
-use Symfony\Component\CssSelector\Node\FunctionNode;
 
 class ProductVariantItemController extends Controller
 {
@@ -26,27 +25,30 @@ class ProductVariantItemController extends Controller
         return view('admin.product.product-variant-item.create', compact('variant', 'product'));
     }
 
-    public function store(Request $request){
-        // dd($request->all());
+    /** Store data */
+    public function store(Request $request)
+    {
         $request->validate([
-           'variant_id' => ['integer', 'required'],
-           'name' => ['required', 'max:200'],
-           'price' => ['required', 'integer'],
-           'is_default' => ['required'],
-           'status' => ['required'],
+            'variant_id' => ['integer', 'required'],
+            'name' => ['required', 'max:200'],
+            'price' => ['integer', 'required'],
+            'is_default' => ['required'],
+            'status' => ['required']
         ]);
 
         $variantItem = new ProductVariantItem();
-        $variantItem->product_variant_id= $request->variant_id;
+        $variantItem->product_variant_id = $request->variant_id;
         $variantItem->name = $request->name;
         $variantItem->price = $request->price;
         $variantItem->is_default = $request->is_default;
         $variantItem->status = $request->status;
         $variantItem->save();
 
-        toastr()->success('Product variant item created successfully');
+        toastr('Created Successfully!', 'success', 'success');
 
-        return redirect()->route('admin.products-variant-item.index', ['productId' => $request->product_id, 'variantId' => $request->variant_id]);
+        return redirect()->route('admin.products-variant-item.index',
+        ['productId' => $request->product_id, 'variantId' => $request->variant_id]);
+
     }
 
     public function edit(string $variantItemId)
@@ -59,9 +61,9 @@ class ProductVariantItemController extends Controller
     {
         $request->validate([
             'name' => ['required', 'max:200'],
-            'price' => ['required', 'integer'],
+            'price' => ['integer', 'required'],
             'is_default' => ['required'],
-            'status' => ['required'],
+            'status' => ['required']
         ]);
 
         $variantItem = ProductVariantItem::findOrFail($variantItemId);
@@ -71,18 +73,10 @@ class ProductVariantItemController extends Controller
         $variantItem->status = $request->status;
         $variantItem->save();
 
-        toastr()->success('Product variant item updated successfully');
+        toastr('Update Successfully!', 'success', 'success');
 
-        return redirect()->route('admin.products-variant-item.index', ['productId' => $variantItem->productVariant->product_id, 'variantId' => $variantItem->product_variant_id]);
-    }
-
-    public function changeStatus(Request $request)
-    {
-        $variantItem = ProductVariantItem::findOrFail($request->id);
-        $variantItem->status = $request->status == 'true' ? 1 : 0;
-        $variantItem->save();
-
-        return response(['message' => 'Status updated successfully']);
+        return redirect()->route('admin.products-variant-item.index',
+        ['productId' => $variantItem->productVariant->product_id, 'variantId' => $variantItem->product_variant_id]);
     }
 
     public function destroy(string $variantItemId)
@@ -90,7 +84,15 @@ class ProductVariantItemController extends Controller
         $variantItem = ProductVariantItem::findOrFail($variantItemId);
         $variantItem->delete();
 
-        return response(['status' => 'success', 'message' => 'Deleted successfully!']);
+        return response(['status' => 'success', 'message' => 'Deleted Successfully!']);
+    }
+
+    public function chageStatus(Request $request)
+    {
+        $variantItem = ProductVariantItem::findOrFail($request->id);
+        $variantItem->status = $request->status == 'true' ? 1 : 0;
+        $variantItem->save();
+
+        return response(['message' => 'Status has been updated!']);
     }
 }
-

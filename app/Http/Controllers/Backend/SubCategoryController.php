@@ -15,9 +15,9 @@ class SubCategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(SubCategoryDataTable $datatable)
+    public function index(SubCategoryDataTable $dataTable)
     {
-        return $datatable->render('admin.sub-category.index');
+        return $dataTable->render('admin.sub-category.index');
     }
 
     /**
@@ -35,9 +35,9 @@ class SubCategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'category'=>['required'],
-            'name'=>['required','max:200', 'unique:sub_categories,name'],
-            'status'=>['required']
+            'category' => ['required'],
+            'name' => ['required', 'max:200', 'unique:sub_categories,name'],
+            'status' => ['required']
         ]);
 
         $subCategory = new SubCategory();
@@ -48,9 +48,10 @@ class SubCategoryController extends Controller
         $subCategory->status = $request->status;
         $subCategory->save();
 
-        toastr('Created Successfully','success');
+        toastr('Created Successfully!', 'success');
 
         return redirect()->route('admin.sub-category.index');
+
     }
 
     /**
@@ -68,7 +69,7 @@ class SubCategoryController extends Controller
     {
         $categories = Category::all();
         $subCategory = SubCategory::findOrFail($id);
-        return view('admin.sub-category.edit', compact('subCategory','categories'));
+        return view('admin.sub-category.edit', compact('subCategory', 'categories'));
     }
 
     /**
@@ -77,9 +78,9 @@ class SubCategoryController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'category'=>['required'],
-            'name'=>['required','max:200', 'unique:sub_categories,name,'.$id],
-            'status'=>['required']
+            'category' => ['required'],
+            'name' => ['required', 'max:200', 'unique:sub_categories,name,'.$id],
+            'status' => ['required']
         ]);
 
         $subCategory = SubCategory::findOrFail($id);
@@ -90,7 +91,7 @@ class SubCategoryController extends Controller
         $subCategory->status = $request->status;
         $subCategory->save();
 
-        toastr('Updated Successfully','success');
+        toastr('Updated Successfully!', 'success');
 
         return redirect()->route('admin.sub-category.index');
     }
@@ -102,12 +103,13 @@ class SubCategoryController extends Controller
     {
         $subCategory = SubCategory::findOrFail($id);
         $childCategory = ChildCategory::where('sub_category_id', $subCategory->id)->count();
+
         if($childCategory > 0){
-            return response(['status' => 'error', 'Item contains sub-item, to delete this item delete its sub-items first']);
+            return response(['status' => 'error', 'message' => 'This items contain, sub items for delete this you have to delete the sub items first!']);
         }
         $subCategory->delete();
 
-        return response(['status' => 'success', 'Deleted Successfully!']);
+        return response(['status' => 'success', 'message' => 'Deleted Successfully!']);
     }
 
     public function changeStatus(Request $request)

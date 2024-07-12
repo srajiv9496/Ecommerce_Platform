@@ -23,28 +23,19 @@ class ProductVariantItemDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', function($query){
+
                 $editBtn = "<a href='".route('admin.products-variant-item.edit', $query->id)."' class='btn btn-primary'><i class='far fa-edit'></i></a>";
                 $deleteBtn = "<a href='".route('admin.products-variant-item.destroy', $query->id)."' class='btn btn-danger ml-2 delete-item'><i class='far fa-trash-alt'></i></a>";
-                
+
                 return $editBtn.$deleteBtn;
-            })
-            ->addColumn('is_default', function($query){
-                if($query->is_default == 1){
-                    return '<i class="badge badge-success">Default</i>';
-                }else{
-                    return '<i class="badge badge-danger">No</i>';
-                }
-            })
-            ->addColumn('variant_name', function($query){
-                return $query->productvariant->name;
             })
             ->addColumn('status', function($query){
                 if($query->status == 1){
                     $button = '<label class="custom-switch mt-2">
-                        <input type="checkbox" checked name="custom-switch-checkbox" data-id="'.$query->id.'" class="custom-switch-input change-status">
+                        <input type="checkbox" checked name="custom-switch-checkbox" data-id="'.$query->id.'" class="custom-switch-input change-status" >
                         <span class="custom-switch-indicator"></span>
                     </label>';
-                }else{
+                }else {
                     $button = '<label class="custom-switch mt-2">
                         <input type="checkbox" name="custom-switch-checkbox" data-id="'.$query->id.'" class="custom-switch-input change-status">
                         <span class="custom-switch-indicator"></span>
@@ -52,7 +43,17 @@ class ProductVariantItemDataTable extends DataTable
                 }
                 return $button;
             })
-            ->rawColumns(['status', 'action', 'is_default', 'variant_name'])
+            ->addColumn('is_default', function($query){
+                if($query->is_default == 1){
+                    return '<i class="badge badge-success">defalut</i>';
+                }else {
+                    return '<i class="badge badge-danger">no</i>';
+                }
+            })
+            ->addColumn('variant_name', function($query){
+                return $query->productVariant->name;
+            })
+            ->rawColumns(['status', 'action', 'is_default'])
             ->setRowId('id');
     }
 
@@ -99,10 +100,10 @@ class ProductVariantItemDataTable extends DataTable
             Column::make('is_default'),
             Column::make('status'),
             Column::computed('action')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->width(200)
-                  ->addClass('text-center'),
+            ->exportable(false)
+            ->printable(false)
+            ->width(200)
+            ->addClass('text-center'),
         ];
     }
 

@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use DB;
 
 class UserSeeder extends Seeder
 {
@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
     {
         DB::table('users')->insert([
             [
-                'name' => 'Admin User',
+                'name' => 'Admin user',
                 'username' => 'adminuser',
                 'email' => 'admin@gmail.com',
                 'role' => 'admin',
@@ -23,7 +23,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('password')
             ],
             [
-                'name' => 'Vendor User',
+                'name' => 'Vendor user',
                 'username' => 'vendoruser',
                 'email' => 'vendor@gmail.com',
                 'role' => 'vendor',
@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('password')
             ],
             [
-                'name' => 'User',
+                'name' => 'user',
                 'username' => 'user',
                 'email' => 'user@gmail.com',
                 'role' => 'user',
